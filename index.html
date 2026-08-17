@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Starlink Stats</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    table { border-collapse: collapse; width: 100%; max-width: 900px; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: right; }
+    th:first-child, td:first-child { text-align: left; }
+    caption { text-align: left; font-weight: bold; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Starlink: последние итоги (Total / Subtotal)</h1>
+  <div id="stats">Загрузка...</div>
+
+  <script>
+    fetch('data.json')
+      .then(r => r.json())
+      .then(data => {
+        const container = document.getElementById('stats');
+        let html = '';
+
+        for (const [label, row] of Object.entries(data)) {
+          html += `<table>`;
+          html += `<caption>${label}</caption><tr>`;
+
+          // Заголовки (можно захардкодить, если знаете структуру)
+          const headers = [
+            "Категория",
+            "Запущено",
+            "Не вышли на орбиту",
+            "Ранний сход",
+            "Маневрирующие",
+            "Нерабочие",
+            "Всего на орбите",
+            "Рабочие",
+            "Резерв",
+            "Связь потеряна",
+            "Уничтожены ASAT",
+            "Всего рабочих",
+            "Миссии",
+            "Посадки",
+            "Повторные",
+            "Потери 1 ст.",
+            "Потери 2 ст.",
+            "Потери ПН",
+            "Потери КА",
+            "Всего потеряно",
+            "Активные миссии"
+          ];
+
+          // Первая строка — заголовки
+          html += `<tr>`;
+          for (let i = 0; i < Math.min(headers.length, row.length); i++) {
+            html += `<th>${headers[i]}</th>`;
+          }
+          html += `</tr>`;
+
+          // Вторая строка — данные
+          html += `<tr>`;
+          for (let i = 0; i < row.length; i++) {
+            html += `<td>${row[i]}</td>`;
+          }
+          html += `</tr>`;
+
+          html += `</table><br>`;
+        }
+
+        container.innerHTML = html;
+      })
+      .catch(err => {
+        document.getElementById('stats').textContent = 'Ошибка загрузки: ' + err;
+      });
+  </script>
+</body>
+</html>
