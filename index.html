@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <title>Starlink Stats</title>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    body { font-family: system-ui, sans-serif; margin: 1.5rem; }
+    .table-wrapper { overflow-x: auto; }
     table {
       border-collapse: collapse;
       width: 100%;
@@ -27,79 +28,39 @@
       margin-bottom: 0.5rem;
       font-size: 1.2rem;
     }
-    /* Для мобильной адаптации – горизонтальный скролл */
-    .table-wrapper {
-      overflow-x: auto;
-    }
   </style>
 </head>
 <body>
   <h1>Starlink: итоговые показатели</h1>
-  <div id="stats">Загрузка...</div>
+  <div id="stats"></div>
 
   <script>
-    fetch('data.json')
-      .then(r => {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(data => {
-        const allRows = data.all_rows || [];
-        if (!allRows.length) {
-          document.getElementById('stats').textContent = 'Нет данных';
-          return;
+    // Данные встроены прямо в скрипт (без fetch)
+    const data = {"headers": ["Mission", "Total Sats Launched", "Failed to orbit", "Early Deorbit", "Disposal Complete", "Reentry after Fail", "Total Down", "Total In Orbit", "Screened", "Failed, decaying", "Graveyard", "Total Working", "Disposal underway", "Out of constellation", "Anom.", "Reserve, Relocating", "Special", "Drift", "Ascent", "Operational Orbit", "Orbit Heights", "Phase vs Plane", "Plane vs Time"], "rows": [["Starlink Gen1"], ["Starlink Gen1", "4714", "0", "114", "1241", "134", "1489", "3225", "0", "13", "0", "3212", "185", "467", "0", "35", "0", "0", "0", "2525", "", "", ""], ["Starlink Gen2"], ["Starlink Gen2", "8011", "0", "67", "176", "14", "257", "7754", "0", "3", "0", "7751", "20", "132", "0", "39", "0", "166", "195", "7199", "", "", ""], ["Starlink Gen3D"], ["Starlink Gen3D", "2", "2", "0", "0", "0", "2", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "", "", ""], ["Starlink Gen3"], ["Starlink Gen3", "20", "20", "0", "0", "0", "20", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "", "", ""], ["Total", "12745", "20", "181", "1417", "148", "1766", "10979", "0", "16", "0", "10963", "205", "599", "0", "74", "0", "166", "195", "9724", "", "", ""]]};
+
+    const container = document.getElementById('stats');
+    if (!data || !data.rows || data.rows.length === 0) {
+      container.textContent = 'Нет данных';
+    } else {
+      let html = '<div class="table-wrapper"><table>';
+      html += '<caption>Сводка по поколениям и общий итог</caption>';
+      html += '<thead><tr>';
+      for (let h of data.headers) {
+        html += '<th>' + (h || '') + '</th>';
+      }
+      html += '</tr></thead><tbody>';
+
+      for (let row of data.rows) {
+        html += '<tr>';
+        for (let i = 0; i < data.headers.length; i++) {
+          const val = (row[i] !== undefined && row[i] !== '') ? row[i] : '';
+          html += '<td>' + val + '</td>';
         }
-
-        const headers = allRows[0]; // первая строка – заголовки столбцов
-
-        // Список названий итоговых строк, которые нужно показать
-        const wanted = [
-          'Starlink Gen1',
-          'Starlink Gen2',
-          'Starlink Gen3D',
-          'Starlink Gen3',
-          'Total'
-        ];
-
-        // Отбираем только строки, где первый столбец точно совпадает с одним из wanted
-        const filtered = allRows.slice(1).filter(row => {
-          const first = (row[0] || '').trim();
-          return wanted.includes(first);
-        });
-
-        if (!filtered.length) {
-          document.getElementById('stats').textContent = 'Нет итоговых строк';
-          return;
-        }
-
-        const container = document.getElementById('stats');
-
-        // Строим одну таблицу
-        let html = '<div class="table-wrapper"><table>';
-        // Заголовок
-        html += '<caption>Сводка по поколениям и общий итог</caption>';
-        html += '<thead><tr>';
-        for (let h of headers) {
-          html += '<th>' + (h || '') + '</th>';
-        }
-        html += '</tr></thead><tbody>';
-
-        // Строки данных
-        for (const row of filtered) {
-          html += '<tr>';
-          for (let i = 0; i < headers.length; i++) {
-            const val = (row[i] !== undefined && row[i] !== '') ? row[i] : '';
-            html += '<td>' + val + '</td>';
-          }
-          html += '</tr>';
-        }
-
-        html += '</tbody></table></div>';
-        container.innerHTML = html;
-      })
-      .catch(err => {
-        document.getElementById('stats').textContent = 'Ошибка загрузки: ' + err;
-      });
+        html += '</tr>';
+      }
+      html += '</tbody></table></div>';
+      container.innerHTML = html;
+    }
   </script>
 </body>
 </html>
