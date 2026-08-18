@@ -32,35 +32,176 @@
 </head>
 <body>
   <h1>Starlink: итоговые показатели</h1>
-  <div id="stats"></div>
-
-  <script>
-    // Данные встроены прямо в скрипт (без fetch)
-    const data = {"headers": ["Mission", "Total Sats Launched", "Failed to orbit", "Early Deorbit", "Disposal Complete", "Reentry after Fail", "Total Down", "Total In Orbit", "Screened", "Failed, decaying", "Graveyard", "Total Working", "Disposal underway", "Out of constellation", "Anom.", "Reserve, Relocating", "Special", "Drift", "Ascent", "Operational Orbit", "Orbit Heights", "Phase vs Plane", "Plane vs Time"], "rows": [["Starlink Gen1"], ["Starlink Gen1", "4714", "0", "114", "1241", "134", "1489", "3225", "0", "13", "0", "3212", "185", "467", "0", "35", "0", "0", "0", "2525", "", "", ""], ["Starlink Gen2"], ["Starlink Gen2", "8011", "0", "67", "176", "14", "257", "7754", "0", "3", "0", "7751", "20", "132", "0", "39", "0", "166", "195", "7199", "", "", ""], ["Starlink Gen3D"], ["Starlink Gen3D", "2", "2", "0", "0", "0", "2", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "", "", ""], ["Starlink Gen3"], ["Starlink Gen3", "20", "20", "0", "0", "0", "20", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "", "", ""], ["Total", "12745", "20", "181", "1417", "148", "1766", "10979", "0", "16", "0", "10963", "205", "599", "0", "74", "0", "166", "195", "9724", "", "", ""]]};
-
-    const container = document.getElementById('stats');
-    if (!data || !data.rows || data.rows.length === 0) {
-      container.textContent = 'Нет данных';
-    } else {
-      let html = '<div class="table-wrapper"><table>';
-      html += '<caption>Сводка по поколениям и общий итог</caption>';
-      html += '<thead><tr>';
-      for (let h of data.headers) {
-        html += '<th>' + (h || '') + '</th>';
-      }
-      html += '</tr></thead><tbody>';
-
-      for (let row of data.rows) {
-        html += '<tr>';
-        for (let i = 0; i < data.headers.length; i++) {
-          const val = (row[i] !== undefined && row[i] !== '') ? row[i] : '';
-          html += '<td>' + val + '</td>';
-        }
-        html += '</tr>';
-      }
-      html += '</tbody></table></div>';
-      container.innerHTML = html;
-    }
-  </script>
+  <div class="table-wrapper">
+    <table>
+      <caption>Сводка по поколениям и общий итог</caption>
+      <thead>
+        <tr>
+          <th>Mission</th>
+          <th>Total Sats Launched</th>
+          <th>Failed to orbit</th>
+          <th>Early Deorbit</th>
+          <th>Disposal Complete</th>
+          <th>Reentry after Fail</th>
+          <th>Total Down</th>
+          <th>Total In Orbit</th>
+          <th>Screened</th>
+          <th>Failed, decaying</th>
+          <th>Graveyard</th>
+          <th>Total Working</th>
+          <th>Disposal underway</th>
+          <th>Out of constellation</th>
+          <th>Anom.</th>
+          <th>Reserve, Relocating</th>
+          <th>Special</th>
+          <th>Drift</th>
+          <th>Ascent</th>
+          <th>Operational Orbit</th>
+          <th>Orbit Heights</th>
+          <th>Phase vs Plane</th>
+          <th>Plane vs Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Starlink Gen1</td>
+        </tr>
+        <tr>
+          <td>Starlink Gen1</td>
+          <td>4714</td>
+          <td>0</td>
+          <td>114</td>
+          <td>1241</td>
+          <td>134</td>
+          <td>1489</td>
+          <td>3225</td>
+          <td>0</td>
+          <td>13</td>
+          <td>0</td>
+          <td>3212</td>
+          <td>185</td>
+          <td>467</td>
+          <td>0</td>
+          <td>35</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2525</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Starlink Gen2</td>
+        </tr>
+        <tr>
+          <td>Starlink Gen2</td>
+          <td>8011</td>
+          <td>0</td>
+          <td>67</td>
+          <td>176</td>
+          <td>14</td>
+          <td>257</td>
+          <td>7754</td>
+          <td>0</td>
+          <td>3</td>
+          <td>0</td>
+          <td>7751</td>
+          <td>20</td>
+          <td>132</td>
+          <td>0</td>
+          <td>39</td>
+          <td>0</td>
+          <td>166</td>
+          <td>195</td>
+          <td>7199</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Starlink Gen3D</td>
+        </tr>
+        <tr>
+          <td>Starlink Gen3D</td>
+          <td>2</td>
+          <td>2</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Starlink Gen3</td>
+        </tr>
+        <tr>
+          <td>Starlink Gen3</td>
+          <td>20</td>
+          <td>20</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>20</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>12745</td>
+          <td>20</td>
+          <td>181</td>
+          <td>1417</td>
+          <td>148</td>
+          <td>1766</td>
+          <td>10979</td>
+          <td>0</td>
+          <td>16</td>
+          <td>0</td>
+          <td>10963</td>
+          <td>205</td>
+          <td>599</td>
+          <td>0</td>
+          <td>74</td>
+          <td>0</td>
+          <td>166</td>
+          <td>195</td>
+          <td>9724</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
