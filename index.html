@@ -5,14 +5,36 @@
   <title>Starlink Stats</title>
   <style>
     body { font-family: system-ui, sans-serif; margin: 2rem; }
-    table { border-collapse: collapse; width: 100%; max-width: 1100px; margin-bottom: 2rem; overflow-x: auto; display: block; }
-    th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: right; white-space: nowrap; }
-    th:first-child, td:first-child { text-align: left; }
-    caption { text-align: left; font-weight: bold; margin-bottom: 0.5rem; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1200px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      text-align: right;
+      white-space: nowrap;
+    }
+    th:first-child, td:first-child {
+      text-align: left;
+      font-weight: 500;
+    }
+    caption {
+      text-align: left;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+    /* Для мобильной адаптации – горизонтальный скролл */
+    .table-wrapper {
+      overflow-x: auto;
+    }
   </style>
 </head>
 <body>
-  <h1>Starlink: последние итоги (Total / Subtotal)</h1>
+  <h1>Starlink: итоговые показатели</h1>
   <div id="stats">Загрузка...</div>
 
   <script>
@@ -28,52 +50,55 @@
           return;
         }
 
-        // Первая строка — заголовки столбцов (Mission, Total Sats Launched, ...)
-        const headers = allRows[0];
+        const headers = allRows[0]; // первая строка – заголовки столбцов
 
-        // Фильтруем строки: Total, Subtotal *, Total Star
+        // Список названий итоговых строк, которые нужно показать
+        const wanted = [
+          'Starlink Gen1',
+          'Starlink Gen2',
+          'Starlink Gen3D',
+          'Starlink Gen3',
+          'Total'
+        ];
+
+        // Отбираем только строки, где первый столбец точно совпадает с одним из wanted
         const filtered = allRows.slice(1).filter(row => {
-          const first = (row[0] || "").toLowerCase();
-          return (
-            first === 'total' ||
-            first === 'total star' ||
-            first.startsWith('subtotal')
-          );
+          const first = (row[0] || '').trim();
+          return wanted.includes(first);
         });
 
         if (!filtered.length) {
-          document.getElementById('stats').textContent = 'Нет строк Total/Subtotal';
+          document.getElementById('stats').textContent = 'Нет итоговых строк';
           return;
         }
 
         const container = document.getElementById('stats');
-        let html = '';
 
+        // Строим одну таблицу
+        let html = '<div class="table-wrapper"><table>';
+        // Заголовок
+        html += '<caption>Сводка по поколениям и общий итог</caption>';
+        html += '<thead><tr>';
+        for (let h of headers) {
+          html += '<th>' + (h || '') + '</th>';
+        }
+        html += '</tr></thead><tbody>';
+
+        // Строки данных
         for (const row of filtered) {
-          html += '<table>';
-          html += '<caption>' + (row[0] || 'Итоги') + '</caption>';
-          html += '<tr>';
-
-          // Заголовки
-          for (let i = 0; i < headers.length; i++) {
-            html += '<th>' + (headers[i] || '') + '</th>';
-          }
-          html += '</tr>';
-
-          // Данные
           html += '<tr>';
           for (let i = 0; i < headers.length; i++) {
-            html += '<td>' + (row[i] !== undefined ? row[i] : '') + '</td>';
+            const val = (row[i] !== undefined && row[i] !== '') ? row[i] : '';
+            html += '<td>' + val + '</td>';
           }
           html += '</tr>';
-
-          html += '</table><br>';
         }
 
+        html += '</tbody></table></div>';
         container.innerHTML = html;
       })
       .catch(err => {
-        document.getElementById('stats').textContent = 'Ошибка: ' + err;
+        document.getElementById('stats').textContent = 'Ошибка загрузки: ' + err;
       });
   </script>
 </body>
