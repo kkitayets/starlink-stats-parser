@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Starlink Stats</title>
   <style>
     body { font-family: system-ui, sans-serif; margin: 1.5rem; }
-    .table-wrapper { overflow-x: auto; }
     table {
       border-collapse: collapse;
       width: 100%;
@@ -28,6 +27,7 @@
       margin-bottom: 0.5rem;
       font-size: 1.2rem;
     }
+    .table-wrapper { overflow-x: auto; }
   </style>
 </head>
 <body>
@@ -35,173 +35,7 @@
   <div class="table-wrapper">
     <table>
       <caption>Сводка по поколениям и общий итог</caption>
-      <thead>
-        <tr>
-          <th>Mission</th>
-          <th>Total Sats Launched</th>
-          <th>Failed to orbit</th>
-          <th>Early Deorbit</th>
-          <th>Disposal Complete</th>
-          <th>Reentry after Fail</th>
-          <th>Total Down</th>
-          <th>Total In Orbit</th>
-          <th>Screened</th>
-          <th>Failed, decaying</th>
-          <th>Graveyard</th>
-          <th>Total Working</th>
-          <th>Disposal underway</th>
-          <th>Out of constellation</th>
-          <th>Anom.</th>
-          <th>Reserve, Relocating</th>
-          <th>Special</th>
-          <th>Drift</th>
-          <th>Ascent</th>
-          <th>Operational Orbit</th>
-          <th>Orbit Heights</th>
-          <th>Phase vs Plane</th>
-          <th>Plane vs Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Starlink Gen1</td>
-        </tr>
-        <tr>
-          <td>Starlink Gen1</td>
-          <td>4714</td>
-          <td>0</td>
-          <td>114</td>
-          <td>1241</td>
-          <td>134</td>
-          <td>1489</td>
-          <td>3225</td>
-          <td>0</td>
-          <td>13</td>
-          <td>0</td>
-          <td>3212</td>
-          <td>185</td>
-          <td>467</td>
-          <td>0</td>
-          <td>35</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>2525</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>Starlink Gen2</td>
-        </tr>
-        <tr>
-          <td>Starlink Gen2</td>
-          <td>8011</td>
-          <td>0</td>
-          <td>67</td>
-          <td>176</td>
-          <td>14</td>
-          <td>257</td>
-          <td>7754</td>
-          <td>0</td>
-          <td>3</td>
-          <td>0</td>
-          <td>7751</td>
-          <td>20</td>
-          <td>132</td>
-          <td>0</td>
-          <td>39</td>
-          <td>0</td>
-          <td>166</td>
-          <td>195</td>
-          <td>7199</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>Starlink Gen3D</td>
-        </tr>
-        <tr>
-          <td>Starlink Gen3D</td>
-          <td>2</td>
-          <td>2</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>2</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>Starlink Gen3</td>
-        </tr>
-        <tr>
-          <td>Starlink Gen3</td>
-          <td>20</td>
-          <td>20</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>20</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>Total</td>
-          <td>12745</td>
-          <td>20</td>
-          <td>181</td>
-          <td>1417</td>
-          <td>148</td>
-          <td>1766</td>
-          <td>10979</td>
-          <td>0</td>
-          <td>16</td>
-          <td>0</td>
-          <td>10963</td>
-          <td>205</td>
-          <td>599</td>
-          <td>0</td>
-          <td>74</td>
-          <td>0</td>
-          <td>166</td>
-          <td>195</td>
-          <td>9724</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+      <thead><tr><th>Mission</th><th>Total Sats Launched</th><th>Failed to orbit</th><th>Early Deorbit</th><th>Disposal Complete</th><th>Reentry after Fail</th><th>Total Down</th><th>Total In Orbit</th><th>Screened</th><th>Failed, decaying</th><th>Graveyard</th><th>Total Working</th><th>Disposal underway</th><th>Out of constellation</th><th>Anom.</th><th>Reserve, Relocating</th><th>Special</th><th>Drift</th><th>Ascent</th><th>Operational Orbit</th><th>Orbit Heights</th><th>Phase vs Plane</th><th>Plane vs Time</th></tr></thead><tbody><tr><td>Starlink Gen1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Starlink Gen1</td><td>4714</td><td>0</td><td>114</td><td>1241</td><td>134</td><td>1489</td><td>3225</td><td>0</td><td>13</td><td>0</td><td>3212</td><td>185</td><td>467</td><td>0</td><td>35</td><td>0</td><td>0</td><td>0</td><td>2525</td><td></td><td></td><td></td></tr><tr><td>Starlink Gen2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Starlink Gen2</td><td>8011</td><td>0</td><td>67</td><td>176</td><td>14</td><td>257</td><td>7754</td><td>0</td><td>3</td><td>0</td><td>7751</td><td>20</td><td>132</td><td>0</td><td>39</td><td>0</td><td>166</td><td>195</td><td>7199</td><td></td><td></td><td></td></tr><tr><td>Starlink Gen3D</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Starlink Gen3D</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr><tr><td>Starlink Gen3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Starlink Gen3</td><td>20</td><td>20</td><td>0</td><td>0</td><td>0</td><td>20</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td></td><td></td><td></td></tr><tr><td>Total</td><td>12745</td><td>20</td><td>181</td><td>1417</td><td>148</td><td>1766</td><td>10979</td><td>0</td><td>16</td><td>0</td><td>10963</td><td>205</td><td>599</td><td>0</td><td>74</td><td>0</td><td>166</td><td>195</td><td>9724</td><td></td><td></td><td></td></tr></tbody></table>
   </div>
 </body>
 </html>
