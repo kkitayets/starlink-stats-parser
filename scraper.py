@@ -1,10 +1,29 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import os
+import re
 
 URL = "https://planet4589.org/space/con/star/stats.html"
 
+# Соответствие полных названий поколений → короткие имена файлов
+GEN_NAMES = {
+    'Starlink Gen1': 'Gen1',
+    'Starlink Gen2': 'Gen2',
+    'Starlink Gen3D': 'Gen3D',
+    'Starlink Gen3': 'Gen3',
+    'Total': 'Total'
+}
+
+# Интересующие нас метрики (названия столбцов в таблице)
+METRICS = [
+    'Total Sats Launched',
+    'Total Down',
+    'Total Working'
+]
+
 def parse_stats():
+    """Загружает таблицу и возвращает список строк."""
     resp = requests.get(URL, timeout=15)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
@@ -32,8 +51,84 @@ def parse_stats():
             rows.append(cells)
     return rows
 
+def get_column_index(headers, name):
+    """Возвращает индекс столбца по его названию."""
+    for i, h in enumerate(headers):
+        if h.strip() == name:
+            return i
+    raise ValueError(f"Столбец '{name}' не найден")
+
+def generate_number_pages(rows):
+    """
+    Создаёт папки и HTML-файлы для каждого числа.
+    Число отображается в левом верхнем углу без отступов.
+    """
+    if not rows:
+        return
+
+    headers = rows[0]
+    # Находим индексы нужных метрик
+    metric_indices = {}
+    for metric in METRICS:
+        metric_indices[metric] = get_column_index(headers, metric)
+
+    # Отбираем только итоговые строки
+    wanted_full_names = list(GEN_NAMES.keys())
+    filtered = []
+    for row in rows[1:]:
+        if row and row[0] in wanted_full_names:
+            filtered.append(row)
+
+    base_dir = "Starlink"
+    for metric in METRICS:
+        metric_dir = os.path.join(base_dir, metric)
+        os.makedirs(metric_dir, exist_ok=True)
+
+        col_index = metric_indices[metric]
+        for row in filtered:
+            full_name = row[0]
+            short_name = GEN_NAMES[full_name]
+            value = row[col_index] if col_index < len(row) else '0'
+
+            # HTML с числом в левом верхнем углу
+            html_content = f"""<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{short_name} {metric}</title>
+  <style>
+    body {{
+      margin: 0;
+      padding: 0;
+      font-size: 10rem;
+      font-family: system-ui, sans-serif;
+      background: white;
+      line-height: 1;
+    }}
+    /* Убираем любые возможные отступы */
+    html, body {{
+      width: 100%;
+      height: 100%;
+    }}
+    .number {{
+      display: inline-block;
+      padding: 10px;
+    }}
+  </style>
+</head>
+<body>
+  <div class="number">{value}</div>
+</body>
+</html>"""
+
+            file_path = os.path.join(metric_dir, f"{short_name}.html")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(html_content)
+
+    print(f"✅ Созданы страницы для {len(METRICS)} метрик в папке '{base_dir}'")
+
 def generate_static_html(rows):
-    """Генерирует index.html с уже встроенной таблицей (без JS)."""
+    """(Опционально) создаёт index.html с общей таблицей для обзора."""
     headers = rows[0] if rows else []
     wanted = ['Starlink Gen1', 'Starlink Gen2', 'Starlink Gen3D', 'Starlink Gen3', 'Total']
     filtered = [row for row in rows[1:] if row and row[0] in wanted]
@@ -77,14 +172,9 @@ def generate_static_html(rows):
         f.write(html)
 
 def generate_json_for_restful(rows):
-    """
-    Создаёт data.json в формате массива объектов.
-    Первая строка - заголовки, каждая следующая строка превращается в объект.
-    Оставляем только нужные итоговые строки.
-    """
+    """(Опционально) сохраняет data.json в формате массива объектов."""
     if not rows:
         return
-
     headers = rows[0]
     wanted = ['Starlink Gen1', 'Starlink Gen2', 'Starlink Gen3D', 'Starlink Gen3', 'Total']
     filtered = [row for row in rows[1:] if row and row[0] in wanted]
@@ -93,18 +183,17 @@ def generate_json_for_restful(rows):
     for row in filtered:
         obj = {}
         for i, header in enumerate(headers):
-            # Если значение есть, берём его, иначе пустая строка
             value = row[i] if i < len(row) else ''
             obj[header] = value
         objects.append(obj)
 
-    # Сохраняем как массив объектов (без обёртки all_rows)
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(objects, f, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
     rows = parse_stats()
-    generate_static_html(rows)       # для iframe / прямой загрузки
-    generate_json_for_restful(rows)  # для Restful Table
+    generate_number_pages(rows)      # ← новые отдельные страницы с числами
+    generate_static_html(rows)       # (оставляем для удобства)
+    generate_json_for_restful(rows)  # (оставляем на всякий случай)
 
-    print("✅ index.html и data.json обновлены.")
+    print("✅ Все страницы обновлены.")
