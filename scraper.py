@@ -87,7 +87,7 @@ def generate_number_pages(rows):
     body {{
       margin: 0;
       padding: 0;
-      font-size: 10rem;
+      font-size: 14px;
       font-family: system-ui, sans-serif;
       background: white;
       line-height: 1;
