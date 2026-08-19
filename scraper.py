@@ -18,6 +18,13 @@ METRICS = [
     'Total Working'
 ]
 
+# Цвета для каждой метрики
+METRIC_COLORS = {
+    'Total Sats Launched': 'blue',
+    'Total Down': 'red',
+    'Total Working': 'green'
+}
+
 def parse_stats():
     resp = requests.get(URL, timeout=15)
     resp.raise_for_status()
@@ -73,6 +80,7 @@ def generate_number_pages(rows):
         os.makedirs(metric_dir, exist_ok=True)
 
         col_index = metric_indices[metric]
+        color = METRIC_COLORS.get(metric, 'black')
         for row in filtered:
             full_name = row[0]
             short_name = GEN_NAMES[full_name]
@@ -99,6 +107,8 @@ def generate_number_pages(rows):
     .number {{
       display: inline-block;
       padding: 10px;
+      font-weight: bold;
+      color: {color};
     }}
   </style>
 </head>
