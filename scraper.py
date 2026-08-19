@@ -29,7 +29,7 @@ PROJECTS = {
         'base_dir': 'Guowang',
         'gen_names': {
             'Chinese Xingwang Constellation (as launched)': 'Xingwang',
-            'Total Xingwang': 'Total'
+            'Total': 'Total'
         }
     },
     'Kuiper': {
@@ -37,7 +37,7 @@ PROJECTS = {
         'base_dir': 'Kuiper',
         'gen_names': {
             'Amazon Leo (Kuiper) Constellation (2024/25 mods)': 'Kuiper',
-            'Total KP': 'Total'
+            'Total': 'Total'
         }
     },
     'OneWeb': {
@@ -45,7 +45,7 @@ PROJECTS = {
         'base_dir': 'OneWeb',
         'gen_names': {
             'OneWeb Constellation (2021 revision, Phase 1)': 'OneWeb',
-            'Total OneWeb': 'Total'
+            'Total': 'Total'
         }
     }
 }
