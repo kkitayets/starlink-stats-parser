@@ -36,12 +36,9 @@ def parse_stats():
 
 def generate_static_html(rows):
     headers = rows[0] if rows else []
-
-    # Какие строки показывать
     wanted = ['Starlink Gen1', 'Starlink Gen2', 'Starlink Gen3D', 'Starlink Gen3', 'Total']
     filtered = [row for row in rows[1:] if row and row[0] in wanted]
 
-    # Строим HTML
     html = """<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -80,32 +77,47 @@ def generate_static_html(rows):
     <table>
       <caption>Сводка по поколениям и общий итог</caption>
       <thead><tr>"""
-
     for h in headers:
         html += f"<th>{h}</th>"
     html += "</tr></thead><tbody>"
-
     for row in filtered:
         html += "<tr>"
         for i in range(len(headers)):
             val = row[i] if i < len(row) else ''
             html += f"<td>{val}</td>"
         html += "</tr>"
-
     html += """</tbody></table>
   </div>
 </body>
 </html>"""
-
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)
 
+def generate_json_for_restful(rows):
+    # rows[0] - заголовки
+    headers = rows[0] if rows else []
+    # Какие строки нас интересуют
+    wanted = ['Starlink Gen1', 'Starlink Gen2', 'Starlink Gen3D', 'Starlink Gen3', 'Total']
+    filtered = [row for row in rows[1:] if row and row[0] in wanted]
+
+    # Преобразуем в список объектов
+    result = []
+    for row in filtered:
+        obj = {}
+        for i, header in enumerate(headers):
+            if i < len(row):
+                obj[header] = row[i]
+            else:
+                obj[header] = ""
+        result.append(obj)
+
+    # Сохраняем как массив объектов
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+
 if __name__ == "__main__":
     rows = parse_stats()
-    generate_static_html(rows)
+    generate_static_html(rows)   # Для iframe или отдельной страницы
+    generate_json_for_restful(rows)  # Для Restful Table
 
-    # Для отладки можно сохранить сырые данные
-    with open("data.json", "w", encoding="utf-8") as f:
-        json.dump({"all_rows": rows}, f, ensure_ascii=False, indent=2)
-
-    print("index.html обновлён (статическая таблица)")
+    print("Обновлены index.html и data.json (в формате массива объектов)")
